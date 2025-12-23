@@ -424,7 +424,7 @@ export default function DPCCalculator() {
                       <div className="form-group">
                         <label>
                           Premium Reduction (%)
-                          <span className="info-icon" title="DPC + HDHP typically achieves 20-40% reduction">
+                          <span className="info-icon" title="Premium reduction achieved by pairing DPC with High Deductible Health Plan (HDHP). DPC covers all primary care; HDHP provides catastrophic coverage only. Lower premium HDHP offsets DPC membership cost. Typical employer savings: 20-40%.">
                             <Info size={16} />
                           </span>
                         </label>
@@ -435,7 +435,7 @@ export default function DPCCalculator() {
                           value={formData.premium_reduction}
                           onChange={(e) => handleInputChange('premium_reduction', parseFloat(e.target.value))}
                         />
-                        <small>Typical DPC+HDHP: 20-40% reduction</small>
+                        <small>Requires DPC + HDHP pairing. Typical: 20-40% reduction</small>
                       </div>
                     </div>
                   </div>
@@ -547,6 +547,18 @@ export default function DPCCalculator() {
           {results && (
             <div className="results-section">
               <h2 className="results-title">Your DPC ROI Analysis</h2>
+              
+              {/* Credibility Warning for Small Sample Sizes */}
+              {formData.num_employees < 100 && (
+                <div className="credibility-warning">
+                  <AlertCircle size={20} />
+                  <div>
+                    <strong>Sample Size Notice:</strong> Results for employers with fewer than 100 employees may have higher variance. 
+                    Actual outcomes can vary significantly based on employee demographics, health status, and local market conditions. 
+                    Larger populations produce more statistically reliable estimates. Consider professional actuarial review for implementation decisions.
+                  </div>
+                </div>
+              )}
               
               {/* Summary Cards */}
               <div className="summary-cards">

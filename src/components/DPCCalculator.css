@@ -235,6 +235,31 @@
   text-align: center;
 }
 
+/* Credibility Warning */
+.credibility-warning {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #92400e;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.credibility-warning svg {
+  flex-shrink: 0;
+  color: #f59e0b;
+  margin-top: 2px;
+}
+
+.credibility-warning strong {
+  color: #78350f;
+}
+
 /* Summary Cards */
 .summary-cards {
   display: grid;

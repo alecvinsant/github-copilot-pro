@@ -140,6 +140,95 @@ ROI = (Savings / DPC Investment) × 100
 3. **No Guarantees**: Past performance of DPC practices does not guarantee future results
 4. **Consult Professionals**: Employers should engage benefits consultants and actuaries before making coverage decisions
 
+## Actuarial Limitations
+
+**This calculator is designed for educational and preliminary screening purposes. It is NOT a substitute for professional actuarial analysis.**
+
+### What This Calculator Does NOT Account For:
+
+1. **Population Risk Factors**
+   - Employee age and gender distribution
+   - Industry-specific risk profiles (e.g., manufacturing vs. office work)
+   - Geographic health risk variations beyond basic cost differentials
+   - Pre-existing condition prevalence in specific populations
+
+2. **Claims Volatility & Credibility**
+   - Statistical confidence intervals for small populations (<100 employees)
+   - Year-to-year claims variance (can be ±30% for small groups)
+   - Risk pooling effects
+   - Credibility adjustments for limited claims experience
+
+3. **Medical Trend & Inflation**
+   - Annual medical cost inflation (typically 5-8% per year)
+   - Drug cost trend (often higher than general medical trend)
+   - Regional cost trend variations
+   - Economic cycle impacts on utilization
+
+4. **Stop-Loss Insurance Details**
+   - Specific attachment points ($50K-$250K per person)
+   - Aggregate attachment calculations
+   - Lasers on high-cost claimants
+   - Stop-loss premium variations by carrier
+
+5. **Plan Design Complexity**
+   - Network steerage effects
+   - High deductible interactions
+   - HSA/FSA coordination
+   - Pharmacy benefit manager (PBM) rebate negotiations
+
+6. **Behavioral & Implementation Factors**
+   - Employee adoption rates (may be <100%)
+   - Change management effectiveness
+   - Provider network disruption costs
+   - Transition period expenses
+
+### When Professional Actuarial Review is Recommended:
+
+- **All self-funded employers** (due to claims risk exposure)
+- **Employers with >50 employees** (material financial impact)
+- **Any employer considering binding commitments** (RFPs, contracts)
+- **Organizations with complex benefits** (multiple plans, unions)
+- **High-risk industries** (healthcare, manufacturing, construction)
+
+### Professional Actuarial Analysis Typically Includes:
+
+- Detailed claims data analysis (minimum 24-36 months)
+- Population health risk adjustment
+- Credibility-weighted projections
+- Monte Carlo simulations for risk quantification
+- Stop-loss optimization modeling
+- Multi-year trend projections
+- IBNR (Incurred But Not Reported) reserves
+- Sensitivity analysis on key assumptions
+- ERISA compliance review
+- State regulatory compliance validation
+
+### How to Use This Calculator Responsibly:
+
+1. **Screening Tool**: Use results to determine if DPC warrants deeper investigation
+2. **Directional Guidance**: Understand potential savings magnitude and key drivers
+3. **Vendor Discussions**: Inform preliminary conversations with DPC providers
+4. **Budget Planning**: Create rough order-of-magnitude budget estimates
+5. **Stakeholder Education**: Demonstrate concept feasibility to leadership
+
+**Do NOT use this calculator alone for:**
+- Final go/no-go decisions
+- Budget commitments
+- Contract negotiations
+- Board presentations (without actuarial validation)
+- Risk assessment for self-funded plans
+
+### Disclaimer
+
+This calculator provides **educational estimates** based on published aggregate outcomes. Individual employer results will vary based on:
+- Specific employee demographics and health status
+- Quality of DPC provider selected
+- Implementation approach and employee engagement
+- Local market conditions and competitive dynamics
+- Plan design choices and integration strategy
+
+**Always engage licensed actuaries and benefits consultants for decision-grade analysis before implementing Direct Primary Care or modifying health plan designs.**
+
 ## References
 
 1. **Qliance Study**: https://www.dpcare.org/qliance-outcomes
