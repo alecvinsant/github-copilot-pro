@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity } from 'lucide-react';
 import './DPCCalculator.css';
 
-// Constants - Based on HCCI and CDC chronic disease cost data
+// Constants
+const MONTHS_PER_YEAR = 12;
+
+// Based on HCCI and CDC chronic disease cost data
 const NATIONAL_COST = {
   multi: 24500, dm2: 22100, ckd: 18200, cancer: 16800, heartfailure: 14600,
   cad: 12300, stroke: 11400, mentalhealth: 9800, chronicpain: 8900, obesity: 7600,
@@ -45,6 +48,13 @@ const UTILIZATION_DEFAULTS = {
   cad: { pcp: 5, urgent: 1.5, er: 0.25, hosp: 0.15 },
   copd: { pcp: 5, urgent: 2.5, er: 0.40, hosp: 0.22 },
   asthma: { pcp: 4, urgent: 2.0, er: 0.15, hosp: 0.08 }
+};
+
+// Helper function to format field names for display
+const formatLabel = (key) => {
+  return key
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase());
 };
 
 export default function DPCCalculator() {
@@ -132,7 +142,7 @@ export default function DPCCalculator() {
       const erClaims = clamp(formData.er_visits, 0, 12) * clamp(formData.er_cost, 0, 100000);
       const hospClaims = clamp(formData.hosp_admits, 0, 2) * clamp(formData.hosp_cost, 0, 500000);
 
-      const dpcMembership = clamp(formData.dpc_monthly, 0, 500) * 12;
+      const dpcMembership = clamp(formData.dpc_monthly, 0, 500) * MONTHS_PER_YEAR;
 
       const dpcUrgentClaims = urgentClaims * (1 - erUrgentRed);
       const dpcErClaims = erClaims * (1 - erUrgentRed);
@@ -146,10 +156,9 @@ export default function DPCCalculator() {
       if (insuranceType === 'fully_insured') {
         const annualPremium = clamp(formData.annual_premium, 0, 50000);
         const reducedPremium = annualPremium * (1 - premiumRed);
-        const dpcMembershipCost = clamp(formData.dpc_monthly, 0, 500) * 12;
 
         traditionalTotal = annualPremium;
-        dpcTotal = reducedPremium + dpcMembershipCost;
+        dpcTotal = reducedPremium + dpcMembership;
 
         const utilizationEstimate = pcpClaims + urgentClaims + erClaims + hospClaims;
         const utilizationSavingsEstimate =
@@ -162,12 +171,12 @@ export default function DPCCalculator() {
 
         dpcBreakdown = {
           premium: money(reducedPremium),
-          membership: money(dpcMembershipCost),
+          membership: money(dpcMembership),
           utilization_estimate: money(utilizationEstimate - utilizationSavingsEstimate)
         };
       } else if (insuranceType === 'self_funded') {
-        const admin = clamp(formData.admin_fees_pmpm, 0, 2000) * 12;
-        const stopLoss = clamp(formData.stop_loss_premium_pmpm, 0, 2000) * 12;
+        const admin = clamp(formData.admin_fees_pmpm, 0, 2000) * MONTHS_PER_YEAR;
+        const stopLoss = clamp(formData.stop_loss_premium_pmpm, 0, 2000) * MONTHS_PER_YEAR;
 
         traditionalTotal = pcpClaims + urgentClaims + erClaims + hospClaims + admin + stopLoss;
         dpcTotal = dpcUrgentClaims + dpcErClaims + dpcHospClaims + admin + stopLoss + dpcMembership;
@@ -585,7 +594,7 @@ export default function DPCCalculator() {
                       <>
                         {Object.keys(results.traditional_breakdown).map(key => (
                           <div className="table-row" key={key}>
-                            <div>{key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</div>
+                            <div>{formatLabel(key)}</div>
                             <div>${results.traditional_breakdown[key].toLocaleString()}</div>
                             <div>${(results.dpc_breakdown[key] || 0).toLocaleString()}</div>
                             <div className={results.traditional_breakdown[key] > (results.dpc_breakdown[key] || 0) ? 'savings' : 'cost'}>
@@ -660,7 +669,11 @@ export default function DPCCalculator() {
                   </div>
                   <div className="metric">
                     <span className="metric-label">Return on DPC Investment:</span>
-                    <span className="metric-value">${(results.annual_total_savings / results.dpc_investment).toFixed(2)}x</span>
+                    <span className="metric-value">
+                      {results.dpc_investment > 0 
+                        ? `$${(results.annual_total_savings / results.dpc_investment).toFixed(2)}x`
+                        : 'N/A'}
+                    </span>
                   </div>
                 </div>
               </div>
