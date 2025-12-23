@@ -501,7 +501,7 @@ export default function DPCCalculator() {
                       value={formData.reduction_percent}
                       onChange={(e) => handleInputChange('reduction_percent', parseFloat(e.target.value))}
                     />
-                    <small style={{ display: 'block', marginTop: '0.25rem', color: '#6b7280', fontSize: '0.8rem' }}>
+                    <small className="range-display">
                       Published range: 40-60%
                     </small>
                   </div>
@@ -519,7 +519,7 @@ export default function DPCCalculator() {
                       value={formData.hosp_reduction_percent}
                       onChange={(e) => handleInputChange('hosp_reduction_percent', parseFloat(e.target.value))}
                     />
-                    <small style={{ display: 'block', marginTop: '0.25rem', color: '#6b7280', fontSize: '0.8rem' }}>
+                    <small className="range-display">
                       Published range: 15-30%
                     </small>
                   </div>
@@ -715,15 +715,15 @@ export default function DPCCalculator() {
               Consult licensed benefits consultants and actuaries before making coverage decisions.
               <br /><br />
               <strong>Data Sources:</strong>
-              <ul style={{ marginTop: '0.5rem', marginLeft: '1.5rem', fontSize: '0.85rem' }}>
+              <ul className="source-list">
                 <li>DPC Utilization Impact: Qliance, Iora Health, JAMA Network Open (2020), DPC Frontier</li>
                 <li>Chronic Disease Costs: CDC NHIS, Health Care Cost Institute (HCCI), American Diabetes Association</li>
                 <li>Healthcare Pricing: CMS Medicare Fee Schedules, FAIR Health database, state all-payer claims data</li>
                 <li>Utilization Benchmarks: Medical Expenditure Panel Survey (MEPS), HCCI claims database</li>
                 <li>Premium Data: Kaiser Family Foundation Employer Health Benefits Survey (annual)</li>
               </ul>
-              <small style={{ display: 'block', marginTop: '0.75rem' }}>
-                See <a href="./DATA_SOURCES.md" target="_blank" rel="noopener noreferrer" style={{ color: '#667eea', textDecoration: 'underline' }}>DATA_SOURCES.md</a> for complete methodology and citations.
+              <small className="citation-link-wrapper">
+                See <a href="/DATA_SOURCES.md" target="_blank" rel="noopener noreferrer" className="citation-link">DATA_SOURCES.md</a> for complete methodology and citations.
               </small>
             </div>
           </div>

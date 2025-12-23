@@ -140,6 +140,14 @@
   font-style: italic;
 }
 
+.range-display {
+  display: block;
+  margin-top: 0.25rem;
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-style: normal;
+}
+
 .info-box {
   background: #d1fae5;
   border: 1px solid #10b981;
@@ -468,6 +476,22 @@
 
 .disclaimer strong {
   color: #f59e0b;
+}
+
+.source-list {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.citation-link-wrapper {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.citation-link {
+  color: #667eea;
+  text-decoration: underline;
 }
 
 /* Responsive */
