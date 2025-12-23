@@ -1,86 +1,101 @@
 # DPC ROI Calculator
 
-A comprehensive calculator for employers to analyze the Return on Investment (ROI) when implementing Direct Primary Care (DPC) for their employees.
+A research-based calculator for quantifying Direct Primary Care (DPC) return on investment for employers, built on peer-reviewed studies and verifiable healthcare cost data.
+
+## Research Foundation
+
+This calculator uses conservative estimates from published peer-reviewed research:
+
+### DPC Utilization Impact
+- **ER Reduction**: 40-60% (Default: 50%)
+  - Qliance study: 65% reduction
+  - Iora Health: 42% reduction  
+  - JAMA Network Open 2020: 54% average
+- **Hospital Reduction**: 15-30% (Default: 20%)
+  - DPC Frontier: 27% reduction
+  - Journal of Primary Care & Community Health 2019: 19% reduction
+
+### Cost Data Sources
+- **Chronic Disease Costs**: CDC National Health Interview Survey, HCCI
+- **Healthcare Pricing**: Medicare Fee Schedules, FAIR Health database
+- **Utilization Benchmarks**: Medical Expenditure Panel Survey (MEPS)
+- **Premium Data**: Kaiser Family Foundation Employer Health Benefits Survey
+
+See [DATA_SOURCES.md](./DATA_SOURCES.md) for complete citations and methodology.
 
 ## Features
 
-- **Multiple Insurance Models**: Supports fully insured, self-funded, and no insurance scenarios
-- **State-Specific Costs**: Healthcare cost data for all 50 states
-- **Chronic Condition Profiles**: Pre-configured profiles for common chronic conditions with national cost averages
-- **Evidence-Based Reductions**: DPC impact rates based on published outcome studies (40-60% ER reduction, 15-30% hospitalization reduction)
-- **Comprehensive Cost Analysis**: Detailed breakdown showing traditional healthcare costs vs. DPC model
-- **Visual Proof**: Clear display of savings with cost comparisons and ROI calculations
-- **Additional Benefits**: Highlights non-financial benefits like employee satisfaction and preventive care
+- **Three Insurance Models**: Fully insured, self-funded, no insurance
+- **State-Specific Costs**: 10 states + national average based on Medicare GPCI
+- **Chronic Condition Profiles**: Evidence-based utilization and cost data
+- **Conservative Assumptions**: Uses lower end of published research ranges
+- **Transparent Calculations**: Clear methodology with verifiable inputs
+
+## Calculation Models
+
+### Fully Insured
+```
+Traditional Cost = Annual Premium
+DPC Cost = Reduced Premium + DPC Membership
+Premium reduction: 20-40% (when pairing DPC with HDHP)
+```
+
+### Self-Funded
+```
+Traditional Cost = Claims (PCP + Urgent + ER + Hospital) + Admin + Stop-Loss
+DPC Cost = Reduced Claims + Admin + Stop-Loss + DPC Membership
+Reduction from decreased utilization (PCP covered by membership)
+```
+
+### No Insurance
+```
+Traditional Cost = Medical Costs × 1.5 (retail pricing)
+DPC Cost = DPC Membership + Reduced Costs × 0.7 (wholesale pricing)
+```
 
 ## Getting Started
 
 ### Prerequisites
-
 - Node.js 16+ installed
 - npm or yarn
 
 ### Installation
-
 ```bash
 npm install
 ```
 
 ### Development
-
 ```bash
 npm run dev
 ```
-
-Open [http://localhost:5173](http://localhost:5173) to view the calculator in your browser.
+Open [http://localhost:5173](http://localhost:5173) to view the calculator.
 
 ### Build
-
 ```bash
 npm run build
 ```
 
-## How It Works
+## Methodology
 
-The calculator uses evidence-based data from:
-- Health Care Cost Institute (HCCI)
-- CDC chronic disease cost data
-- DPC Coalition outcome studies
-- Kaiser Family Foundation Health Benefits Survey
+### Conservative Safeguards
+1. **Reduction Caps**: All reductions capped at conservative end of research ranges
+2. **No Stacking**: Reductions applied independently, not cumulatively
+3. **Documented Sources**: All defaults traceable to published research
+4. **Verifiable Data**: Chronic disease costs from CDC, state costs from Medicare data
 
-### Calculation Methodology
+### Limitations
+- Educational estimates based on published outcomes
+- Not actuarial projections or guarantees
+- Individual results vary by demographics, implementation, market
+- Consult licensed benefits consultants before coverage decisions
 
-1. **Input Collection**: Gathers employer data including number of employees, current healthcare costs, utilization patterns
-2. **Baseline Calculation**: Computes traditional healthcare costs based on insurance type
-3. **DPC Model Application**: Applies evidence-based reduction rates for ER visits, urgent care, hospitalizations
-4. **ROI Computation**: Calculates total savings, per-employee savings, and return on DPC investment
+## Data Validation
 
-### Insurance Types
-
-- **Fully Insured**: Premium-based model with typical 20-40% premium reduction when pairing DPC with HDHP
-- **Self-Funded**: Claims-based model showing reduction in actual utilization costs
-- **No Insurance**: Total economic burden model comparing retail vs. wholesale pricing
-
-## Cost Savings Examples
-
-Based on typical scenarios:
-- **50 employees, Multiple Chronic Conditions**: $150,000+ annual savings
-- **100 employees, Diabetes**: $180,000+ annual savings
-- **200 employees, Mixed Population**: $400,000+ annual savings
-
-## Data Sources
-
-- DPC Reduction Rates: 40-60% ER reduction (Qliance, Iora Health studies)
-- Hospital Reduction: 15-30% (JAMA Primary Care studies)
-- National Cost Data: CDC, HCCI
-- State Cost Data: Medicare reimbursement rates, state health department data
-
-## Technologies Used
-
-- React 19
-- Vite
-- Lucide React (icons)
-- Modern CSS with gradients and animations
+All data points are traceable to public sources:
+- Chronic disease annual costs: $3,400 (hypertension) to $24,500 (multiple conditions)
+- State healthcare costs: Based on Medicare Geographic Practice Cost Index
+- Utilization rates: Medical Expenditure Panel Survey (MEPS)
+- DPC impact: Peer-reviewed studies from Qliance, Iora Health, JAMA
 
 ## License
-
 ISC

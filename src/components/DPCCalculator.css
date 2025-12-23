@@ -335,45 +335,71 @@
   font-weight: 600;
 }
 
-/* Benefits Grid */
-.benefits-section {
+/* Methodology Section */
+.methodology-section {
   margin: 2rem 0;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.benefits-section h3 {
+.methodology-section h3 {
   font-size: 1.5rem;
   color: #667eea;
   margin-bottom: 1rem;
 }
 
-.benefits-grid {
+.methodology-content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1rem;
 }
 
-.benefit-card {
+.method-card {
   background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: 1.25rem;
+  border-radius: 8px;
   border-left: 4px solid #667eea;
-  text-align: center;
 }
 
-.benefit-icon {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.benefit-card h4 {
+.method-card h4 {
   color: #667eea;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.benefit-card p {
+.method-card ul {
+  list-style-position: inside;
   font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.8;
+}
+
+.method-card ul li {
+  margin-bottom: 0.5rem;
+}
+
+.method-card p {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.method-card p.note {
+  font-size: 0.85rem;
   color: #6b7280;
+  font-style: italic;
+  margin-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.75rem;
+}
+
+.method-card strong {
+  color: #111827;
+  font-weight: 600;
 }
 
 /* Metrics Section */
