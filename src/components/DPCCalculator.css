@@ -788,3 +788,159 @@
   color: #10b981;
   font-size: 1.1rem;
 }
+
+/* Export Buttons */
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.export-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.export-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.export-button:active {
+  transform: translateY(0);
+}
+
+/* Print Media Queries - Clean output for printing */
+@media print {
+  /* Hide non-essential elements */
+  .toolbar,
+  .reset-button,
+  .autosave-indicator,
+  .export-buttons,
+  .form-section,
+  .collapse-toggle,
+  .info-icon,
+  button {
+    display: none !important;
+  }
+
+  /* Clean layout */
+  body {
+    background: white;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dpc-calculator {
+    padding: 0;
+  }
+
+  .container {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .header {
+    background: white !important;
+    color: black !important;
+    page-break-after: avoid;
+    padding: 1rem;
+    border-bottom: 2px solid #333;
+  }
+
+  .header h1 {
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    color: #666;
+    font-size: 1rem;
+  }
+
+  /* Results section */
+  .results-section {
+    page-break-before: avoid;
+  }
+
+  .results-title {
+    color: black !important;
+    background: none !important;
+    -webkit-text-fill-color: black !important;
+    font-size: 1.5rem;
+    page-break-after: avoid;
+  }
+
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    page-break-inside: avoid;
+  }
+
+  .summary-card {
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .summary-card h3 {
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .big-number {
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  /* Tables */
+  .comparison-table,
+  .methodology-grid {
+    page-break-inside: avoid;
+  }
+
+  .table-header,
+  .table-row {
+    border-color: #ddd !important;
+  }
+
+  /* Charts - try to keep them visible but simplified */
+  .charts-section {
+    page-break-inside: avoid;
+  }
+
+  /* Credibility warning */
+  .credibility-warning {
+    border: 1px solid #f59e0b;
+    background: #fffbeb;
+    page-break-inside: avoid;
+  }
+
+  /* Footer disclaimer */
+  .footer {
+    page-break-before: avoid;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+  }
+
+  /* Force page breaks between major sections */
+  .methodology-section {
+    page-break-before: always;
+  }
+}

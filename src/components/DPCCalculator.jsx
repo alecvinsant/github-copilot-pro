@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity, BarChart3, PieChart, Save, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity, BarChart3, PieChart, Save, RotateCcw, ChevronDown, ChevronUp, FileDown, Mail, Printer } from 'lucide-react';
 import { BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './DPCCalculator.css';
 
@@ -193,6 +193,88 @@ export default function DPCCalculator() {
         hosp_admits: util.hosp
       }));
     }
+  };
+
+  // Export to CSV function
+  const exportToCSV = () => {
+    if (!results) return;
+
+    const csvRows = [];
+    csvRows.push('DPC ROI Calculator - Results Export');
+    csvRows.push('');
+    csvRows.push('Summary Metrics');
+    csvRows.push(`Total Annual Savings,$${results.annual_total_savings.toLocaleString()}`);
+    csvRows.push(`ROI Percentage,${results.roi_percentage.toFixed(1)}%`);
+    csvRows.push(`Savings per Employee,$${results.annual_savings_per_employee.toLocaleString()}`);
+    csvRows.push(`DPC Investment,$${results.dpc_investment.toLocaleString()}`);
+    csvRows.push('');
+    csvRows.push('Company Information');
+    csvRows.push(`Insurance Type,${formData.insurance_type}`);
+    csvRows.push(`State,${STATE_NAMES[formData.state]}`);
+    csvRows.push(`Number of Employees,${formData.num_employees}`);
+    csvRows.push('');
+    csvRows.push('Cost Breakdown');
+    csvRows.push('Component,Traditional,With DPC,Savings');
+    
+    if (results.insurance_type === 'fully_insured') {
+      csvRows.push(`Insurance Premium,$${results.traditional_breakdown.premium.toLocaleString()},$${results.dpc_breakdown.premium.toLocaleString()},$${(results.traditional_breakdown.premium - results.dpc_breakdown.premium).toLocaleString()}`);
+      csvRows.push(`DPC Membership,$0,$${results.dpc_breakdown.membership.toLocaleString()},-$${results.dpc_breakdown.membership.toLocaleString()}`);
+    } else {
+      Object.keys(results.traditional_breakdown).forEach(key => {
+        const trad = results.traditional_breakdown[key];
+        const dpc = results.dpc_breakdown[key] || 0;
+        csvRows.push(`${formatLabel(key)},$${trad.toLocaleString()},$${dpc.toLocaleString()},$${(trad - dpc).toLocaleString()}`);
+      });
+    }
+
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `DPC_ROI_Analysis_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Email mailto link function
+  const emailResults = () => {
+    if (!results) return;
+
+    const subject = encodeURIComponent('DPC ROI Analysis Results');
+    const body = encodeURIComponent(`DPC ROI Calculator - Analysis Results
+
+SUMMARY METRICS:
+• Total Annual Savings: $${results.annual_total_savings.toLocaleString()}
+• ROI Percentage: ${results.roi_percentage.toFixed(1)}%
+• Savings per Employee: $${results.annual_savings_per_employee.toLocaleString()}
+• DPC Investment: $${results.dpc_investment.toLocaleString()}
+• 5-Year Projection: $${(results.annual_total_savings * 5).toLocaleString()}
+
+COMPANY INFORMATION:
+• Insurance Type: ${formData.insurance_type}
+• State: ${STATE_NAMES[formData.state]}
+• Number of Employees: ${formData.num_employees}
+• Chronic Condition Profile: ${formData.chronic_condition}
+
+COST COMPARISON:
+• Traditional Healthcare: $${results.traditional_annual_per_employee.toLocaleString()}/employee/year
+• With DPC: $${results.dpc_annual_per_employee.toLocaleString()}/employee/year
+• Savings: $${results.annual_savings_per_employee.toLocaleString()}/employee/year
+
+This analysis was generated using the DPC ROI Calculator.
+Educational estimates only - not actuarial projections.
+Consult licensed benefits consultants and actuaries before making coverage decisions.
+`);
+
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  };
+
+  // Print function
+  const printResults = () => {
+    window.print();
   };
 
   const calculateSavings = () => {
@@ -698,6 +780,22 @@ export default function DPCCalculator() {
                     <p className="big-number">${results.annual_savings_per_employee.toLocaleString()}</p>
                   </div>
                 </div>
+              </div>
+
+              {/* Export/Share Buttons */}
+              <div className="export-buttons">
+                <button onClick={exportToCSV} className="export-button" title="Download CSV">
+                  <FileDown size={16} />
+                  <span>Export CSV</span>
+                </button>
+                <button onClick={emailResults} className="export-button" title="Email results">
+                  <Mail size={16} />
+                  <span>Email Results</span>
+                </button>
+                <button onClick={printResults} className="export-button" title="Print results">
+                  <Printer size={16} />
+                  <span>Print</span>
+                </button>
               </div>
 
               {/* Cost Comparison */}
