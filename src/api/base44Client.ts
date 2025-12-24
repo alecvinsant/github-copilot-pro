@@ -89,7 +89,7 @@ const mockPractices: DPCPractice[] = [
 class Base44Client {
   entities = {
     DPCPractice: {
-      list: async (orderBy: string, limit: number): Promise<DPCPractice[]> => {
+      list: async (_orderBy: string, _limit: number): Promise<DPCPractice[]> => {
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 500));
         return mockPractices;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { DPCPractice } from '@/api/base44Client';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
