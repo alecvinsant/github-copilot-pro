@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity } from 'lucide-react';
+import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity, BarChart3, PieChart } from 'lucide-react';
+import { BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './DPCCalculator.css';
 
 // Constants
@@ -636,6 +637,106 @@ export default function DPCCalculator() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Visual Analytics Section */}
+              <div className="analytics-section">
+                <h3 className="section-title">
+                  <BarChart3 size={24} />
+                  Visual Savings Analysis
+                </h3>
+                
+                <div className="charts-grid">
+                  {/* Savings Comparison Bar Chart */}
+                  <div className="chart-card">
+                    <h4>Cost Comparison</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={[
+                        {
+                          name: 'Traditional',
+                          cost: results.traditional_annual_per_employee,
+                          fill: '#ef4444'
+                        },
+                        {
+                          name: 'With DPC',
+                          cost: results.dpc_annual_per_employee,
+                          fill: '#10b981'
+                        }
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="name" stroke="#6b7280" />
+                        <YAxis stroke="#6b7280" tickFormatter={(value) => `$${value.toLocaleString()}`} />
+                        <Tooltip 
+                          formatter={(value) => `$${value.toLocaleString()}`}
+                          contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                        />
+                        <Bar dataKey="cost" radius={[8, 8, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* 5-Year Savings Projection */}
+                  <div className="chart-card">
+                    <h4>5-Year Cumulative Savings</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={[
+                        { year: 'Year 1', savings: results.annual_total_savings },
+                        { year: 'Year 2', savings: results.annual_total_savings * 2 },
+                        { year: 'Year 3', savings: results.annual_total_savings * 3 },
+                        { year: 'Year 4', savings: results.annual_total_savings * 4 },
+                        { year: 'Year 5', savings: results.annual_total_savings * 5 }
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="year" stroke="#6b7280" />
+                        <YAxis stroke="#6b7280" tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`} />
+                        <Tooltip 
+                          formatter={(value) => `$${value.toLocaleString()}`}
+                          contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px' }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="savings" 
+                          stroke="#667eea" 
+                          strokeWidth={3}
+                          dot={{ fill: '#667eea', r: 6 }}
+                          activeDot={{ r: 8 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                {/* Savings Breakdown Donut */}
+                {results.insurance_type === 'fully_insured' && (
+                  <div className="chart-card full-width">
+                    <h4>Savings Breakdown</h4>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <RechartsPie>
+                        <Pie
+                          data={[
+                            { name: 'Premium Savings', value: results.traditional_breakdown.premium - results.dpc_breakdown.premium, color: '#10b981' },
+                            { name: 'DPC Investment', value: results.dpc_breakdown.membership, color: '#f59e0b' }
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={60}
+                          outerRadius={100}
+                          paddingAngle={5}
+                          dataKey="value"
+                          label={({ name, value }) => `${name}: $${value.toLocaleString()}`}
+                        >
+                          {[
+                            { name: 'Premium Savings', value: results.traditional_breakdown.premium - results.dpc_breakdown.premium, color: '#10b981' },
+                            { name: 'DPC Investment', value: results.dpc_breakdown.membership, color: '#f59e0b' }
+                          ].map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+                      </RechartsPie>
+                    </ResponsiveContainer>
+                  </div>
+                )}
               </div>
 
               {/* Calculation Methodology */}
