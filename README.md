@@ -1,6 +1,6 @@
-# DPC ROI Calculator
+# DPC Impact Analysis
 
-A research-based calculator for quantifying Direct Primary Care (DPC) return on investment for employers, built on peer-reviewed studies and verifiable healthcare cost data.
+A research-based platform for quantifying Direct Primary Care (DPC) financial impact for employers, built on peer-reviewed studies and verifiable healthcare cost data.
 
 ## Research Foundation
 

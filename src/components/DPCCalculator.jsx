@@ -232,7 +232,7 @@ export default function DPCCalculator() {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `DPC_ROI_Analysis_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `DPC_Impact_Analysis_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -243,8 +243,8 @@ export default function DPCCalculator() {
   const emailResults = () => {
     if (!results) return;
 
-    const subject = encodeURIComponent('DPC ROI Analysis Results');
-    const body = encodeURIComponent(`DPC ROI Calculator - Analysis Results
+    const subject = encodeURIComponent('DPC Impact Analysis Results');
+    const body = encodeURIComponent(`DPC Impact Analysis - Results
 
 SUMMARY METRICS:
 • Total Annual Savings: $${results.annual_total_savings.toLocaleString()}
@@ -264,7 +264,7 @@ COST COMPARISON:
 • With DPC: $${results.dpc_annual_per_employee.toLocaleString()}/employee/year
 • Savings: $${results.annual_savings_per_employee.toLocaleString()}/employee/year
 
-This analysis was generated using the DPC ROI Calculator.
+This analysis was generated using the DPC Impact Analysis platform.
 Educational estimates only - not actuarial projections.
 Consult licensed benefits consultants and actuaries before making coverage decisions.
 `);
@@ -402,9 +402,9 @@ Consult licensed benefits consultants and actuaries before making coverage decis
       <div className="container">
         {/* Header */}
         <header className="header">
-          <h1>Direct Primary Care (DPC) ROI Calculator</h1>
+          <h1>DPC Impact Analysis</h1>
           <p className="subtitle">
-            Calculate Your Company's Healthcare Savings with DPC
+            Quantify Healthcare Savings with Data-Driven DPC Modeling
           </p>
           
           {/* Autosave indicator and reset button */}
@@ -743,7 +743,7 @@ Consult licensed benefits consultants and actuaries before making coverage decis
           {/* Results Section */}
           {results && (
             <div className="results-section">
-              <h2 className="results-title">Your DPC ROI Analysis</h2>
+              <h2 className="results-title">Your DPC Impact Analysis</h2>
               
               {/* Credibility Warning for Small Sample Sizes */}
               {formData.num_employees < 100 && (
