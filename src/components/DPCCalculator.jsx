@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity, BarChart3, PieChart } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Calculator, Info, TrendingDown, AlertCircle, DollarSign, Users, Building2, Activity, BarChart3, PieChart, Save, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
 import { BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './DPCCalculator.css';
 
@@ -65,7 +65,21 @@ const formatLabel = (key) => {
 };
 
 export default function DPCCalculator() {
-  const [formData, setFormData] = useState({
+  // Load saved data from localStorage on mount
+  const loadSavedData = () => {
+    try {
+      const saved = localStorage.getItem('dpc_calculator_draft');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed.formData || null;
+      }
+    } catch (e) {
+      console.error('Error loading saved data:', e);
+    }
+    return null;
+  };
+
+  const defaultFormData = {
     insurance_type: 'fully_insured',
     state: 'tx',
     chronic_condition: 'multi',
@@ -85,13 +99,74 @@ export default function DPCCalculator() {
     dpc_monthly: 75,
     reduction_percent: DPC_IMPACT_RATES.er_reduction,
     hosp_reduction_percent: DPC_IMPACT_RATES.hosp_reduction
-  });
+  };
 
+  const [formData, setFormData] = useState(loadSavedData() || defaultFormData);
   const [results, setResults] = useState(null);
   const [calculating, setCalculating] = useState(false);
+  const [sectionsCollapsed, setSectionsCollapsed] = useState({
+    basic: false,
+    costs: false,
+    dpc: false,
+    results: false,
+    charts: false
+  });
+  const [lastSaved, setLastSaved] = useState(null);
+
+  // Autosave to localStorage whenever formData changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem('dpc_calculator_draft', JSON.stringify({
+          formData,
+          timestamp: new Date().toISOString()
+        }));
+        setLastSaved(new Date());
+      } catch (e) {
+        console.error('Error saving to localStorage:', e);
+      }
+    }, 1000); // Debounce for 1 second
+
+    return () => clearTimeout(timer);
+  }, [formData]);
+
+  // Keyboard shortcut: Enter to calculate
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Enter key triggers calculation if not in textarea
+      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && !e.shiftKey && !e.ctrlKey) {
+        const activeElement = document.activeElement;
+        if (activeElement && (activeElement.tagName === 'INPUT' || activeElement.tagName === 'SELECT')) {
+          e.preventDefault();
+          calculateSavings();
+        }
+      }
+    };
+
+    document.addEventListener('keypress', handleKeyPress);
+    return () => document.removeEventListener('keypress', handleKeyPress);
+  }, [formData]); // Re-attach when formData changes to capture latest state
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const toggleSection = (section) => {
+    setSectionsCollapsed(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const resetForm = () => {
+    if (window.confirm('Reset calculator to default values? This will clear all your inputs.')) {
+      setFormData(defaultFormData);
+      setResults(null);
+      localStorage.removeItem('dpc_calculator_draft');
+      setLastSaved(null);
+    }
+  };
+
+  const clearSavedDraft = () => {
+    localStorage.removeItem('dpc_calculator_draft');
+    setLastSaved(null);
   };
 
   const applyStateDefaults = (state) => {
@@ -249,6 +324,24 @@ export default function DPCCalculator() {
           <p className="subtitle">
             Calculate Your Company's Healthcare Savings with DPC
           </p>
+          
+          {/* Autosave indicator and reset button */}
+          <div className="toolbar">
+            {lastSaved && (
+              <div className="autosave-indicator">
+                <Save size={14} />
+                <span>Draft saved {new Date(lastSaved).toLocaleTimeString()}</span>
+              </div>
+            )}
+            <button 
+              onClick={resetForm}
+              className="reset-button"
+              title="Reset calculator to default values"
+            >
+              <RotateCcw size={16} />
+              <span>Reset</span>
+            </button>
+          </div>
         </header>
 
         <div className="content">
@@ -256,10 +349,16 @@ export default function DPCCalculator() {
           <div className="form-section">
             {/* Basic Information */}
             <div className="card">
-              <div className="card-header">
-                <div className="step-badge">1</div>
-                <h2>Basic Information</h2>
+              <div className="card-header" onClick={() => toggleSection('basic')}>
+                <div className="card-header-content">
+                  <div className="step-badge">1</div>
+                  <h2>Basic Information</h2>
+                </div>
+                <button className="collapse-toggle" aria-label="Toggle section">
+                  {sectionsCollapsed.basic ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+                </button>
               </div>
+              {!sectionsCollapsed.basic && (
               <div className="card-content">
                 <div className="form-group">
                   <label>
@@ -321,14 +420,21 @@ export default function DPCCalculator() {
                   />
                 </div>
               </div>
+              )}
             </div>
 
             {/* Healthcare Costs */}
             <div className="card">
-              <div className="card-header">
-                <div className="step-badge">2</div>
-                <h2>Healthcare Costs & Utilization</h2>
+              <div className="card-header" onClick={() => toggleSection('costs')}>
+                <div className="card-header-content">
+                  <div className="step-badge">2</div>
+                  <h2>Healthcare Costs & Utilization</h2>
+                </div>
+                <button className="collapse-toggle" aria-label="Toggle section">
+                  {sectionsCollapsed.costs ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+                </button>
               </div>
+              {!sectionsCollapsed.costs && (
               <div className="card-content">
                 <div className="grid-2">
                   <div className="form-group">
@@ -469,14 +575,21 @@ export default function DPCCalculator() {
                   </div>
                 )}
               </div>
+              )}
             </div>
 
             {/* DPC Settings */}
             <div className="card dpc-card">
-              <div className="card-header">
-                <TrendingDown size={20} />
-                <h2>DPC Impact Assumptions</h2>
+              <div className="card-header" onClick={() => toggleSection('dpc')}>
+                <div className="card-header-content">
+                  <TrendingDown size={20} />
+                  <h2>DPC Impact Assumptions</h2>
+                </div>
+                <button className="collapse-toggle" aria-label="Toggle section">
+                  {sectionsCollapsed.dpc ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+                </button>
               </div>
+              {!sectionsCollapsed.dpc && (
               <div className="card-content">
                 <div className="grid-3">
                   <div className="form-group">
@@ -541,6 +654,7 @@ export default function DPCCalculator() {
                   )}
                 </button>
               </div>
+              )}
             </div>
           </div>
 

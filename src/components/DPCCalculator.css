@@ -31,6 +31,47 @@
   opacity: 0.95;
 }
 
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.autosave-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}
+
+.reset-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.reset-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
 /* Content Layout */
 .content {
   padding: 2rem;
@@ -58,8 +99,33 @@
   padding: 1.5rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   border-bottom: 2px solid #dee2e6;
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.collapse-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.collapse-toggle:hover {
+  color: #333;
+  transform: scale(1.1);
 }
 
 .step-badge {
@@ -550,6 +616,56 @@
 
   .charts-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Mobile-specific optimizations */
+  .toolbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .autosave-indicator {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .reset-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Mobile chart optimizations - make charts swipeable */
+  .charts-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .chart-card {
+    min-width: 90vw;
+    scroll-snap-align: start;
+  }
+
+  .chart-card.full-width {
+    min-width: 90vw;
+  }
+
+  /* Collapsible sections default to collapsed on mobile */
+  .card-content {
+    padding: 1rem;
+  }
+
+  /* Ensure forms are easily tappable on mobile */
+  input, select {
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  button {
+    min-height: 44px;
   }
 }
 
