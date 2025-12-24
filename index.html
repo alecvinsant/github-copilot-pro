@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Copilot ROI Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GitHub Copilot ROI Calculator</h1>
+            <p class="subtitle">Calculate the return on investment for GitHub Copilot in your organization</p>
+        </header>
+
+        <div class="calculator-wrapper">
+            <div class="input-section">
+                <h2>Input Parameters</h2>
+                
+                <div class="input-group">
+                    <label for="numDevelopers">Number of Developers:</label>
+                    <input type="number" id="numDevelopers" min="1" value="10" required>
+                    <span class="help-text">Total number of developers who will use Copilot</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="avgSalary">Average Developer Salary ($/year):</label>
+                    <input type="number" id="avgSalary" min="0" value="120000" required>
+                    <span class="help-text">Annual salary per developer</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="productivityGain">Productivity Gain (%):</label>
+                    <input type="number" id="productivityGain" min="0" max="100" value="25" step="0.1" required>
+                    <span class="help-text">Expected productivity improvement (typical: 20-30%)</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="copilotCost">Copilot Cost per User ($/month):</label>
+                    <input type="number" id="copilotCost" min="0" value="19" step="0.01" required>
+                    <span class="help-text">Monthly subscription cost per developer</span>
+                </div>
+
+                <div class="input-group">
+                    <label for="workingHours">Working Hours per Year:</label>
+                    <input type="number" id="workingHours" min="0" value="2080" required>
+                    <span class="help-text">Annual working hours per developer (typically 2080)</span>
+                </div>
+
+                <button id="calculateBtn" class="calculate-btn">Calculate ROI</button>
+            </div>
+
+            <div class="results-section">
+                <h2>ROI Analysis</h2>
+                
+                <div class="result-card">
+                    <h3>Annual Costs</h3>
+                    <div class="result-item">
+                        <span class="result-label">Total Copilot Cost:</span>
+                        <span class="result-value" id="totalCost">$0</span>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Annual Benefits</h3>
+                    <div class="result-item">
+                        <span class="result-label">Time Saved (hours):</span>
+                        <span class="result-value" id="timeSaved">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Value of Time Saved:</span>
+                        <span class="result-value" id="valueSaved">$0</span>
+                    </div>
+                </div>
+
+                <div class="result-card highlight">
+                    <h3>Return on Investment</h3>
+                    <div class="result-item">
+                        <span class="result-label">Net Annual Benefit:</span>
+                        <span class="result-value" id="netBenefit">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">ROI Percentage:</span>
+                        <span class="result-value roi-percentage" id="roiPercentage">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Payback Period:</span>
+                        <span class="result-value" id="paybackPeriod">0 months</span>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Per Developer Metrics</h3>
+                    <div class="result-item">
+                        <span class="result-label">Annual Cost per Developer:</span>
+                        <span class="result-value" id="costPerDev">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Annual Value per Developer:</span>
+                        <span class="result-value" id="valuePerDev">$0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Net Benefit per Developer:</span>
+                        <span class="result-value" id="netPerDev">$0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Note: This calculator provides estimates based on industry averages and your inputs. Actual results may vary.</p>
+        </footer>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
