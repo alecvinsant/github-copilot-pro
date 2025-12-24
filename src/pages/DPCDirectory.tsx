@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { base44, DPCPractice } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -37,7 +37,7 @@ export default function DPCDirectory() {
   const [servicesFilter, setServicesFilter] = useState<string[]>([]);
   const [feeRange, setFeeRange] = useState([0, 500]);
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedForComparison, setSelectedForComparison] = useState<any[]>([]);
+  const [selectedForComparison, setSelectedForComparison] = useState<DPCPractice[]>([]);
   const [showComparison, setShowComparison] = useState(false);
 
   const { data: practices = [], isLoading } = useQuery({
@@ -94,7 +94,7 @@ export default function DPCDirectory() {
 
   const sortedStates = Object.keys(practicesByState).sort();
 
-  const togglePracticeSelection = (practice: any) => {
+  const togglePracticeSelection = (practice: DPCPractice) => {
     setSelectedForComparison(prev => {
       const isSelected = prev.find(p => p.id === practice.id);
       if (isSelected) {
