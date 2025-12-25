@@ -1,0 +1,946 @@
+.dpc-calculator {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  opacity: 0.95;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.autosave-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}
+
+.reset-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.reset-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Content Layout */
+.content {
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
+}
+
+/* Form Section */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Card Styles */
+.card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 2px solid #dee2e6;
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.collapse-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.collapse-toggle:hover {
+  color: #333;
+  transform: scale(1.1);
+}
+
+.step-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.card-content {
+  padding: 1.5rem;
+}
+
+.dpc-card .card-header {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.dpc-card .card-header h2 {
+  color: #065f46;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.info-icon {
+  color: #9ca3af;
+  cursor: help;
+  display: inline-flex;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.375rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.range-display {
+  display: block;
+  margin-top: 0.25rem;
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-style: normal;
+}
+
+.info-box {
+  background: #d1fae5;
+  border: 1px solid #10b981;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #065f46;
+  font-weight: 600;
+}
+
+/* Grid Layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.insurance-specific {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #dee2e6;
+}
+
+/* Calculate Button */
+.calculate-btn {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.calculate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.3);
+}
+
+.calculate-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.calculate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Results Section */
+.results-section {
+  margin-top: 2rem;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.results-title {
+  font-size: 2rem;
+  color: #667eea;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Credibility Warning */
+.credibility-warning {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: #92400e;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.credibility-warning svg {
+  flex-shrink: 0;
+  color: #f59e0b;
+  margin-top: 2px;
+}
+
+.credibility-warning strong {
+  color: #78350f;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.summary-card.highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.card-icon {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.summary-card h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.summary-card.highlight h3 {
+  opacity: 1;
+}
+
+.big-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.summary-card.highlight .big-number {
+  color: white;
+}
+
+/* Comparison Table */
+.comparison-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.comparison-section h3 {
+  font-size: 1.5rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.comparison-table {
+  overflow-x: auto;
+}
+
+.table-header {
+  background: #667eea;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+}
+
+.table-header > div,
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.table-body .table-row {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-body .table-row:hover {
+  background: #f9fafb;
+}
+
+.table-row.total {
+  background: #f3f4f6;
+  font-weight: 700;
+  border-bottom: none;
+}
+
+.savings {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.cost {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Methodology Section */
+.methodology-section {
+  margin: 2rem 0;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.methodology-section h3 {
+  font-size: 1.5rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.methodology-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.method-card {
+  background: #f8f9fa;
+  padding: 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.method-card h4 {
+  color: #667eea;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.method-card ul {
+  list-style-position: inside;
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.8;
+}
+
+.method-card ul li {
+  margin-bottom: 0.5rem;
+}
+
+.method-card p {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.method-card p.note {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.75rem;
+}
+
+.method-card strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Metrics Section */
+.metrics-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.metrics-section h3 {
+  font-size: 1.5rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+}
+
+.metric-label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.metric-value {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Footer */
+.footer {
+  background: #f8f9fa;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.disclaimer {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.disclaimer svg {
+  flex-shrink: 0;
+  color: #f59e0b;
+}
+
+.disclaimer strong {
+  color: #f59e0b;
+}
+
+.source-list {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.citation-link-wrapper {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.citation-link {
+  color: #667eea;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+
+  .table-header > div,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Mobile-specific optimizations */
+  .toolbar {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .autosave-indicator {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .reset-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Mobile chart optimizations - make charts swipeable */
+  .charts-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .chart-card {
+    min-width: 90vw;
+    scroll-snap-align: start;
+  }
+
+  .chart-card.full-width {
+    min-width: 90vw;
+  }
+
+  /* Collapsible sections default to collapsed on mobile */
+  .card-content {
+    padding: 1rem;
+  }
+
+  /* Ensure forms are easily tappable on mobile */
+  input, select {
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  button {
+    min-height: 44px;
+  }
+}
+
+/* Analytics Section */
+.analytics-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: #667eea;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 2px solid #e5e7eb;
+}
+
+.chart-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.chart-card h4 {
+  font-size: 1.1rem;
+  color: #374151;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Enhanced Summary Cards with Animations */
+.summary-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.summary-card.highlight:hover {
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Gradient Enhancements */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Typography Improvements */
+.results-title {
+  font-size: 2.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Improved Metrics Section */
+.metrics-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 2px solid #dee2e6;
+  margin-bottom: 2rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.metric {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.metric-value {
+  font-weight: 700;
+  color: #10b981;
+  font-size: 1.1rem;
+}
+
+/* Export Buttons */
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.export-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.export-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.export-button:active {
+  transform: translateY(0);
+}
+
+/* Print Media Queries - Clean output for printing */
+@media print {
+  /* Hide non-essential elements */
+  .toolbar,
+  .reset-button,
+  .autosave-indicator,
+  .export-buttons,
+  .form-section,
+  .collapse-toggle,
+  .info-icon,
+  button {
+    display: none !important;
+  }
+
+  /* Clean layout */
+  body {
+    background: white;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dpc-calculator {
+    padding: 0;
+  }
+
+  .container {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .header {
+    background: white !important;
+    color: black !important;
+    page-break-after: avoid;
+    padding: 1rem;
+    border-bottom: 2px solid #333;
+  }
+
+  .header h1 {
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    color: #666;
+    font-size: 1rem;
+  }
+
+  /* Results section */
+  .results-section {
+    page-break-before: avoid;
+  }
+
+  .results-title {
+    color: black !important;
+    background: none !important;
+    -webkit-text-fill-color: black !important;
+    font-size: 1.5rem;
+    page-break-after: avoid;
+  }
+
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    page-break-inside: avoid;
+  }
+
+  .summary-card {
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .summary-card h3 {
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .big-number {
+    color: black;
+    font-size: 1.5rem;
+  }
+
+  /* Tables */
+  .comparison-table,
+  .methodology-grid {
+    page-break-inside: avoid;
+  }
+
+  .table-header,
+  .table-row {
+    border-color: #ddd !important;
+  }
+
+  /* Charts - try to keep them visible but simplified */
+  .charts-section {
+    page-break-inside: avoid;
+  }
+
+  /* Credibility warning */
+  .credibility-warning {
+    border: 1px solid #f59e0b;
+    background: #fffbeb;
+    page-break-inside: avoid;
+  }
+
+  /* Footer disclaimer */
+  .footer {
+    page-break-before: avoid;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+  }
+
+  /* Force page breaks between major sections */
+  .methodology-section {
+    page-break-before: always;
+  }
+}
