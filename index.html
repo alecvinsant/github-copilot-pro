@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GitHub Copilot Pro - AI-powered coding assistant for professional developers. Boost productivity by 55% with intelligent code completion, test generation, and real-time analysis.">
+    <meta name="keywords" content="GitHub, Copilot, AI, coding, development, programming, code completion, AI assistant, developer tools">
+    <meta name="author" content="Alec Vinsant">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alecvinsant.github.io/github-copilot-pro/">
+    <meta property="og:title" content="GitHub Copilot Pro - AI-Powered Development">
+    <meta property="og:description" content="Revolutionize your development workflow with intelligent code suggestions, instant documentation, and automated testing powered by cutting-edge AI.">
+    <meta property="og:image" content="https://alecvinsant.github.io/github-copilot-pro/preview.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://alecvinsant.github.io/github-copilot-pro/">
+    <meta name="twitter:title" content="GitHub Copilot Pro - AI-Powered Development">
+    <meta name="twitter:description" content="Revolutionize your development workflow with intelligent code suggestions, instant documentation, and automated testing powered by cutting-edge AI.">
+    <meta name="twitter:image" content="https://alecvinsant.github.io/github-copilot-pro/preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    
+    <title>GitHub Copilot Pro - AI-Powered Development</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                <span class="brand-text">Copilot Pro</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#use-cases" class="nav-link">Use Cases</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">GitHub Copilot Pro</span>
+                </h1>
+                <p class="hero-subtitle">Your AI-Powered Coding Companion</p>
+                <p class="hero-description">
+                    Revolutionize your development workflow with intelligent code suggestions, 
+                    instant documentation, and automated testing powered by cutting-edge AI.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#features" class="btn btn-primary">Explore Features</a>
+                    <a href="https://github.com/alecvinsant/github-copilot-pro" class="btn btn-secondary" target="_blank">View on GitHub</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-window">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span class="dot dot-red"></span>
+                            <span class="dot dot-yellow"></span>
+                            <span class="dot dot-green"></span>
+                        </div>
+                        <span class="window-title">main.js</span>
+                    </div>
+                    <div class="code-content">
+                        <pre><code><span class="code-comment">// AI-powered code completion</span>
+<span class="code-keyword">function</span> <span class="code-function">analyzeData</span>(<span class="code-param">data</span>) {
+  <span class="code-keyword">const</span> result = <span class="code-function">processInput</span>(data);
+  <span class="code-keyword">return</span> result.<span class="code-function">optimize</span>();
+}
+
+<span class="code-comment">// Intelligent suggestions ✨</span>
+<span class="code-keyword">export</span> { analyzeData };</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <p class="section-subtitle">Everything you need to code smarter and faster</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Smart Code Completion</h3>
+                    <p>Get intelligent code suggestions that understand your context and coding style.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 6v6l4 2"></path>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Analysis</h3>
+                    <p>Instant feedback on code quality, performance issues, and potential bugs.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Auto Documentation</h3>
+                    <p>Automatically generate comprehensive documentation for your codebase.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Test Generation</h3>
+                    <p>Create comprehensive unit tests automatically for better code coverage.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                        </svg>
+                    </div>
+                    <h3>Bug Detection</h3>
+                    <p>Identify and fix potential issues before they make it to production.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Multi-Language Support</h3>
+                    <p>Works seamlessly with Python, JavaScript, Java, C++, and 40+ languages.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases" class="use-cases">
+        <div class="container">
+            <h2 class="section-title">Real-World Use Cases</h2>
+            <p class="section-subtitle">See how developers are using GitHub Copilot Pro</p>
+            
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">💻</div>
+                        <h3>Full-Stack Development</h3>
+                    </div>
+                    <p>Build complete web applications faster with AI-powered frontend and backend code generation. From React components to RESTful APIs.</p>
+                    <div class="use-case-stat">
+                        <span class="stat-highlight">3x</span> faster development
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🧪</div>
+                        <h3>Test Automation</h3>
+                    </div>
+                    <p>Generate comprehensive unit tests, integration tests, and e2e tests automatically. Achieve 90%+ code coverage effortlessly.</p>
+                    <div class="use-case-stat">
+                        <span class="stat-highlight">90%</span> test coverage
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🔧</div>
+                        <h3>Legacy Code Refactoring</h3>
+                    </div>
+                    <p>Modernize old codebases with intelligent refactoring suggestions. Convert class components to hooks, upgrade deprecated APIs.</p>
+                    <div class="use-case-stat">
+                        <span class="stat-highlight">50%</span> time saved
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">📚</div>
+                        <h3>Documentation Generation</h3>
+                    </div>
+                    <p>Auto-generate JSDoc, TypeDoc, or Sphinx documentation. Keep your docs in sync with your code automatically.</p>
+                    <div class="use-case-stat">
+                        <span class="stat-highlight">100%</span> doc coverage
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🐛</div>
+                        <h3>Bug Detection & Fixing</h3>
+                    </div>
+                    <p>Identify potential bugs, security vulnerabilities, and performance issues before they reach production.</p>
+                    <div class="use-case-stat">
+                        <span class="stat-highlight">80%</span> fewer bugs
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <div class="use-case-header">
+                        <div class="use-case-icon">🚀</div>
+                        <h3>API Integration</h3>
+                    </div>
+                    <p>Quickly integrate with third-party APIs, SDKs, and services with auto-generated boilerplate and error handling.</p>
+                    <div class="use-case-stat">
+                        <span class="stat-highlight">10x</span> faster integration
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Developers Say</h2>
+            <p class="section-subtitle">Join thousands of satisfied developers worldwide</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"GitHub Copilot Pro has completely transformed how I write code. It's like having a senior developer pair programming with you 24/7."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SJ</div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Johnson</div>
+                            <div class="author-role">Senior Full-Stack Developer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The AI suggestions are incredibly accurate. It understands context better than any tool I've used before. Productivity is through the roof!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MC</div>
+                        <div class="author-info">
+                            <div class="author-name">Michael Chen</div>
+                            <div class="author-role">Lead Software Engineer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"As a junior developer, Copilot Pro has been invaluable for learning best practices and understanding complex patterns. It's accelerated my growth exponentially."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">EP</div>
+                        <div class="author-info">
+                            <div class="author-name">Emily Parker</div>
+                            <div class="author-role">Junior Developer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">Choose the plan that works best for you</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">0</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Basic code suggestions</li>
+                        <li>✓ 5 languages supported</li>
+                        <li>✓ Community support</li>
+                        <li>✓ Public repositories</li>
+                        <li>✗ Advanced AI features</li>
+                        <li>✗ Priority support</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary">Get Started</a>
+                </div>
+
+                <div class="pricing-card pricing-card-featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3>Pro</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">19</span>
+                            <span class="period">/month</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Advanced code suggestions</li>
+                        <li>✓ 40+ languages supported</li>
+                        <li>✓ Priority support</li>
+                        <li>✓ Public & private repos</li>
+                        <li>✓ AI-powered debugging</li>
+                        <li>✓ Test generation</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Start Free Trial</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">
+                            <span class="amount">Custom</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Everything in Pro</li>
+                        <li>✓ Custom AI models</li>
+                        <li>✓ Dedicated support</li>
+                        <li>✓ On-premise deployment</li>
+                        <li>✓ SLA guarantee</li>
+                        <li>✓ Team management</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know</p>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How does GitHub Copilot Pro work?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>GitHub Copilot Pro uses advanced AI models trained on billions of lines of code to understand your coding context and provide intelligent suggestions. It analyzes your current file, related files, and your coding patterns to generate relevant code snippets, functions, and even entire modules.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is my code secure and private?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. Your code remains private and secure. Copilot Pro processes your code locally and only sends minimal context to our AI servers for suggestions. We never store or share your proprietary code, and all data transmission is encrypted end-to-end.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Which programming languages are supported?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>GitHub Copilot Pro supports 40+ programming languages including JavaScript, TypeScript, Python, Java, C++, C#, Ruby, Go, Rust, PHP, Swift, Kotlin, and many more. It works particularly well with popular frameworks like React, Vue, Angular, Django, Flask, Spring Boot, and .NET.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I use it with my favorite IDE?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Copilot Pro integrates seamlessly with VS Code, Visual Studio, JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.), Neovim, and more. Simply install the extension for your IDE and start coding with AI assistance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What's the difference between Free and Pro?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The Free tier provides basic code suggestions for common scenarios and supports 5 popular languages. Pro unlocks advanced AI features including multi-file context awareness, test generation, debugging assistance, documentation generation, support for 40+ languages, and priority customer support.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is there a free trial?</span>
+                        <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! We offer a 30-day free trial of GitHub Copilot Pro with no credit card required. Experience all Pro features risk-free and see how it transforms your development workflow. Cancel anytime during the trial period.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About GitHub Copilot Pro</h2>
+                    <p>
+                        GitHub Copilot Pro is an advanced AI-powered development tool designed to enhance 
+                        your coding experience. Built on top of cutting-edge machine learning models, it 
+                        understands your code context and provides intelligent suggestions that help you 
+                        write better code faster.
+                    </p>
+                    <p>
+                        Whether you're a seasoned developer or just starting your coding journey, 
+                        Copilot Pro adapts to your skill level and coding style, making it the perfect 
+                        companion for any development project.
+                    </p>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number">40+</div>
+                            <div class="stat-label">Languages Supported</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">10M+</div>
+                            <div class="stat-label">Developers Worldwide</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">55%</div>
+                            <div class="stat-label">Faster Development</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <svg width="100%" height="100%" viewBox="0 0 400 300">
+                            <rect width="400" height="300" fill="url(#gradient1)"/>
+                            <defs>
+                                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:0.8" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="200" cy="150" r="80" fill="rgba(255,255,255,0.1)" />
+                            <circle cx="200" cy="150" r="60" fill="rgba(255,255,255,0.1)" />
+                            <circle cx="200" cy="150" r="40" fill="rgba(255,255,255,0.2)" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get Started Today</h2>
+            <p class="section-subtitle">Join millions of developers using GitHub Copilot Pro</p>
+            
+            <div class="newsletter-section">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter for tips, updates, and exclusive content</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+                <p class="newsletter-privacy">We respect your privacy. Unsubscribe anytime.</p>
+            </div>
+            
+            <div class="contact-buttons">
+                <a href="https://github.com/alecvinsant/github-copilot-pro" class="btn btn-primary" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
+                    </svg>
+                    Visit Repository
+                </a>
+                <a href="https://github.com/alecvinsant" class="btn btn-secondary" target="_blank">
+                    View Profile
+                </a>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://github.com/alecvinsant/github-copilot-pro" class="social-link" aria-label="GitHub">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"></path>
+                    </svg>
+                </a>
+                <a href="https://twitter.com" class="social-link" aria-label="Twitter">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+                    </svg>
+                </a>
+                <a href="https://linkedin.com" class="social-link" aria-label="LinkedIn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 GitHub Copilot Pro. Built with ❤️ by developers, for developers.</p>
+            <div class="footer-links">
+                <a href="https://github.com/alecvinsant/github-copilot-pro">GitHub</a>
+                <a href="#home">Back to Top</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
