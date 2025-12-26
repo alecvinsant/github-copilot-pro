@@ -64,11 +64,20 @@ if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const emailInput = newsletterForm.querySelector('input[type="email"]');
+        const submitBtn = newsletterForm.querySelector('button[type="submit"]');
         const email = emailInput.value;
         
-        // Show success message (in real app, this would send to backend)
-        alert(`Thank you for subscribing! We'll send updates to ${email}`);
+        // Show inline success message
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.textContent = '✓ Subscribed!';
+        submitBtn.style.background = '#10b981';
         emailInput.value = '';
+        
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            submitBtn.textContent = originalBtnText;
+            submitBtn.style.background = '';
+        }, 3000);
     });
 }
 
@@ -218,28 +227,3 @@ document.querySelectorAll('.feature-card').forEach(card => {
         setTimeout(() => ripple.remove(), 600);
     });
 });
-
-// Add typing effect to code window (optional enhancement)
-const codeContent = document.querySelector('.code-content code');
-if (codeContent) {
-    const originalText = codeContent.innerHTML;
-    let index = 0;
-    
-    // Uncomment to enable typing effect
-    /*
-    codeContent.innerHTML = '';
-    const typeWriter = () => {
-        if (index < originalText.length) {
-            codeContent.innerHTML += originalText.charAt(index);
-            index++;
-            setTimeout(typeWriter, 50);
-        }
-    };
-    setTimeout(typeWriter, 1000);
-    */
-}
-
-// Console message for developers
-console.log('%c🚀 GitHub Copilot Pro', 'font-size: 24px; font-weight: bold; color: #667eea;');
-console.log('%cWelcome to the future of coding!', 'font-size: 14px; color: #94a3b8;');
-console.log('%cInterested in the code? Check out the repository: https://github.com/alecvinsant/github-copilot-pro', 'font-size: 12px; color: #667eea;');
