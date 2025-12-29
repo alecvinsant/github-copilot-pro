@@ -64,26 +64,40 @@ const formatLabel = (key) => {
     .replace(/\b\w/g, l => l.toUpperCase());
 };
 
+// DPC Pricing tiers configuration
+const DPC_PRICING_TIERS = [
+  { maxEmployees: 10, price: 100, label: '1-10 employees' },
+  { maxEmployees: 25, price: 95, label: '11-25 employees' },
+  { maxEmployees: 50, price: 90, label: '26-50 employees' },
+  { maxEmployees: 100, price: 85, label: '51-100 employees' },
+  { maxEmployees: 250, price: 80, label: '101-250 employees' },
+  { maxEmployees: Infinity, price: 75, label: '250+ employees (Custom)' }
+];
+
 // Tiered pricing function based on employee count
 const getDPCPricing = (employeeCount) => {
-  if (employeeCount <= 0) return 100; // Default to highest tier
-  if (employeeCount <= 10) return 100;
-  if (employeeCount <= 25) return 95;
-  if (employeeCount <= 50) return 90;
-  if (employeeCount <= 100) return 85;
-  if (employeeCount <= 250) return 80;
-  return 75; // 250+ employees
+  if (employeeCount <= 0) return DPC_PRICING_TIERS[0].price;
+  
+  for (const tier of DPC_PRICING_TIERS) {
+    if (employeeCount <= tier.maxEmployees) {
+      return tier.price;
+    }
+  }
+  
+  return DPC_PRICING_TIERS[DPC_PRICING_TIERS.length - 1].price;
 };
 
 // Get pricing tier description
 const getDPCPricingTier = (employeeCount) => {
-  if (employeeCount <= 0) return '1-10 employees';
-  if (employeeCount <= 10) return '1-10 employees';
-  if (employeeCount <= 25) return '11-25 employees';
-  if (employeeCount <= 50) return '26-50 employees';
-  if (employeeCount <= 100) return '51-100 employees';
-  if (employeeCount <= 250) return '101-250 employees';
-  return '250+ employees (Custom)';
+  if (employeeCount <= 0) return DPC_PRICING_TIERS[0].label;
+  
+  for (const tier of DPC_PRICING_TIERS) {
+    if (employeeCount <= tier.maxEmployees) {
+      return tier.label;
+    }
+  }
+  
+  return DPC_PRICING_TIERS[DPC_PRICING_TIERS.length - 1].label;
 };
 
 export default function DPCCalculator() {
