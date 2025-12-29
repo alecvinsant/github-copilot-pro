@@ -437,13 +437,24 @@ Consult licensed benefits consultants and actuaries before making coverage decis
           const pairingHDHP = formData.pairing_with_hdhp ?? true;
           const actualPremiumRed = pairingHDHP ? premiumRed : 0;
           scenarioDPC = annualPremium * (1 - actualPremiumRed) + dpcMembership;
-        } else {
+        } else if (insuranceType === 'self_funded') {
+          // Self-funded: Apply reductions to ER/Urgent/Hospital claims
           const scenarioUrgent = urgentClaims * (1 - erUrgentReduction);
           const scenarioER = erClaims * (1 - erUrgentReduction);
           const scenarioHosp = hospClaims * (1 - hospReduction);
           const admin = clamp(formData.admin_fees_pmpm, 0, 2000) * MONTHS_PER_YEAR;
           const stopLoss = clamp(formData.stop_loss_premium_pmpm, 0, 2000) * MONTHS_PER_YEAR;
+          // DPC membership REPLACES PCP claims (PCP cost = $0 in DPC model)
           scenarioDPC = scenarioUrgent + scenarioER + scenarioHosp + admin + stopLoss + dpcMembership;
+        } else { // no_insurance
+          // Uninsured: Apply wholesale/retail multipliers
+          const retail = CAPS.RETAIL_MULTIPLIER;
+          const wholesale = CAPS.WHOLESALE_MULTIPLIER;
+          const scenarioUrgent = urgentClaims * (1 - erUrgentReduction);
+          const scenarioER = erClaims * (1 - erUrgentReduction);
+          const scenarioHosp = hospClaims * (1 - hospReduction);
+          // DPC eliminates PCP claims, applies wholesale rates to reduced utilization
+          scenarioDPC = ((scenarioUrgent + scenarioER + scenarioHosp) * wholesale) + dpcMembership;
         }
         
         return (scenarioTraditional - scenarioDPC) * employees;
