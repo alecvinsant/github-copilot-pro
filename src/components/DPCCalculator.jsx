@@ -64,6 +64,28 @@ const formatLabel = (key) => {
     .replace(/\b\w/g, l => l.toUpperCase());
 };
 
+// Tiered pricing function based on employee count
+const getDPCPricing = (employeeCount) => {
+  if (employeeCount <= 0) return 100; // Default to highest tier
+  if (employeeCount <= 10) return 100;
+  if (employeeCount <= 25) return 95;
+  if (employeeCount <= 50) return 90;
+  if (employeeCount <= 100) return 85;
+  if (employeeCount <= 250) return 80;
+  return 75; // 250+ employees
+};
+
+// Get pricing tier description
+const getDPCPricingTier = (employeeCount) => {
+  if (employeeCount <= 0) return '1-10 employees';
+  if (employeeCount <= 10) return '1-10 employees';
+  if (employeeCount <= 25) return '11-25 employees';
+  if (employeeCount <= 50) return '26-50 employees';
+  if (employeeCount <= 100) return '51-100 employees';
+  if (employeeCount <= 250) return '101-250 employees';
+  return '250+ employees (Custom)';
+};
+
 export default function DPCCalculator() {
   // Load saved data from localStorage on mount
   const loadSavedData = () => {
@@ -97,7 +119,7 @@ export default function DPCCalculator() {
     pairing_with_hdhp: true, // NEW: Explicit HDHP pairing toggle
     admin_fees_pmpm: 75,
     stop_loss_premium_pmpm: 150,
-    dpc_monthly: 75,
+    dpc_monthly: getDPCPricing(50), // Tiered pricing based on employee count (26-50 tier = $90)
     reduction_percent: DPC_IMPACT_RATES.er_reduction,
     hosp_reduction_percent: DPC_IMPACT_RATES.hosp_reduction
   };
@@ -149,7 +171,16 @@ export default function DPCCalculator() {
   }, [formData]); // Re-attach when formData changes to capture latest state
 
   const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => {
+      const updated = { ...prev, [field]: value };
+      
+      // Auto-update DPC monthly cost based on employee tier when employee count changes
+      if (field === 'num_employees') {
+        updated.dpc_monthly = getDPCPricing(value);
+      }
+      
+      return updated;
+    });
   };
 
   const toggleSection = (section) => {
@@ -783,13 +814,21 @@ Consult licensed benefits consultants and actuaries before making coverage decis
               <div className="card-content">
                 <div className="grid-3">
                   <div className="form-group">
-                    <label>DPC Monthly Cost ($)</label>
+                    <label>
+                      DPC Monthly Cost ($)
+                      <span className="info-icon" title="Automatically calculated based on employee count using tiered pricing">
+                        <Info size={16} />
+                      </span>
+                    </label>
                     <input
                       type="number"
                       min="1"
                       value={formData.dpc_monthly}
                       onChange={(e) => handleInputChange('dpc_monthly', parseFloat(e.target.value))}
                     />
+                    <small className="range-display" style={{ color: '#10b981' }}>
+                      Tier: {getDPCPricingTier(formData.num_employees)} = ${getDPCPricing(formData.num_employees)}/month
+                    </small>
                   </div>
                   <div className="form-group">
                     <label>
