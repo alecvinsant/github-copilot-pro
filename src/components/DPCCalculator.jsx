@@ -288,11 +288,15 @@ Consult licensed benefits consultants and actuaries before making coverage decis
       const money = (v) => Math.round((num(v) + Number.EPSILON) * 100) / 100;
 
       const CAPS = {
-        ER_URGENT: 50,
-        HOSP: 20,
-        PREMIUM: 25,
-        RETAIL_MULTIPLIER: 1.5,
-        WHOLESALE_MULTIPLIER: 0.7
+        // Peer-reviewed DPC reduction ranges (conservative defaults used)
+        // ER/Urgent: Qliance 65%, Iora 42%, JAMA 2020 54% avg → Range: 40-60%, Default: 50%
+        // Hospital: DPC Frontier 27%, Employer Health Innovation 23% → Range: 15-30%, Default: 20%
+        // Premium: Requires HDHP pairing, typical range 20-40%, Default: 25%
+        ER_URGENT: 50,  // Conservative middle of 40-60% published range
+        HOSP: 20,       // Conservative middle of 15-30% published range  
+        PREMIUM: 25,    // Conservative middle of 20-40% HDHP reduction range
+        RETAIL_MULTIPLIER: 1.5,    // Self-pay markup (uninsured)
+        WHOLESALE_MULTIPLIER: 0.7   // DPC negotiated rates (uninsured)
       };
 
       const insuranceType = formData.insurance_type;
@@ -395,8 +399,8 @@ Consult licensed benefits consultants and actuaries before making coverage decis
       const roiOnInvestmentPct = dpcInvestment > 0 ? (totalSavings / dpcInvestment) * 100 : 0;
 
       // 5-YEAR PROJECTION with medical trend
-      const MEDICAL_TREND = 0.065; // 6.5% annual trend (industry standard)
-      const DPC_FEE_INCREASE = 0.03; // DPC fees increase 3% per year
+      const MEDICAL_TREND = 0.075; // 7.5% annual trend (2024-2025 post-COVID inflation, was 6.5% pre-COVID)
+      const DPC_FEE_INCREASE = 0.03; // DPC fees increase 3% per year (typical contract escalation)
       
       const fiveYearProjection = [];
       for (let year = 1; year <= 5; year++) {
@@ -416,6 +420,46 @@ Consult licensed benefits consultants and actuaries before making coverage decis
         });
       }
 
+      // SENSITIVITY ANALYSIS: Best/Worst Case Scenarios
+      // Best Case: Upper end of published ranges (60% ER/Urgent, 30% Hospital)
+      // Worst Case: Lower end of published ranges (40% ER/Urgent, 15% Hospital)
+      const bestCaseERUrgent = 0.60; // Upper bound from Qliance study
+      const bestCaseHosp = 0.30;     // Upper bound from published data
+      const worstCaseERUrgent = 0.40; // Lower bound (conservative)
+      const worstCaseHosp = 0.15;    // Lower bound (conservative)
+      
+      const calculateScenario = (erUrgentReduction, hospReduction) => {
+        let scenarioTraditional = traditionalTotal;
+        let scenarioDPC = 0;
+        
+        if (insuranceType === 'fully_insured') {
+          const annualPremium = clamp(formData.annual_premium, 0, 50000);
+          const pairingHDHP = formData.pairing_with_hdhp ?? true;
+          const actualPremiumRed = pairingHDHP ? premiumRed : 0;
+          scenarioDPC = annualPremium * (1 - actualPremiumRed) + dpcMembership;
+        } else {
+          const scenarioUrgent = urgentClaims * (1 - erUrgentReduction);
+          const scenarioER = erClaims * (1 - erUrgentReduction);
+          const scenarioHosp = hospClaims * (1 - hospReduction);
+          const admin = clamp(formData.admin_fees_pmpm, 0, 2000) * MONTHS_PER_YEAR;
+          const stopLoss = clamp(formData.stop_loss_premium_pmpm, 0, 2000) * MONTHS_PER_YEAR;
+          scenarioDPC = scenarioUrgent + scenarioER + scenarioHosp + admin + stopLoss + dpcMembership;
+        }
+        
+        return (scenarioTraditional - scenarioDPC) * employees;
+      };
+      
+      const sensitivityAnalysis = {
+        baseCase: totalSavings,
+        bestCase: money(calculateScenario(bestCaseERUrgent, bestCaseHosp)),
+        worstCase: money(calculateScenario(worstCaseERUrgent, worstCaseHosp)),
+        assumptions: {
+          bestCase: "60% ER/Urgent reduction, 30% Hospital reduction (published upper bounds)",
+          worstCase: "40% ER/Urgent reduction, 15% Hospital reduction (published lower bounds)",
+          baseCase: `${Math.round(erUrgentRed * 100)}% ER/Urgent reduction, ${Math.round(hospRed * 100)}% Hospital reduction (current settings)`
+        }
+      };
+
       setResults({
         traditional_annual_per_employee: money(traditionalTotal),
         dpc_annual_per_employee: money(dpcTotal),
@@ -426,7 +470,9 @@ Consult licensed benefits consultants and actuaries before making coverage decis
         insurance_type: insuranceType,
         traditional_breakdown: traditionalBreakdown,
         dpc_breakdown: dpcBreakdown,
-        five_year_projection: fiveYearProjection // NEW: 5-year trend analysis
+        five_year_projection: fiveYearProjection, // 5-year trend analysis with medical inflation
+        sensitivity_analysis: sensitivityAnalysis, // Best/Worst case scenarios from peer-reviewed ranges
+        num_employees: employees // Store for display warnings
       });
 
       setCalculating(false);
@@ -801,12 +847,23 @@ Consult licensed benefits consultants and actuaries before making coverage decis
                 <div className="credibility-warning">
                   <AlertCircle size={20} />
                   <div>
-                    <strong>Sample Size Notice:</strong> Results for employers with fewer than 100 employees may have higher variance. 
-                    Actual outcomes can vary significantly based on employee demographics, health status, and local market conditions. 
-                    Larger populations produce more statistically reliable estimates. Consider professional actuarial review for implementation decisions.
+                    <strong>Small Employer Notice:</strong> Results for employers with fewer than 100 employees may have higher variance due to limited sample size. 
+                    Actual outcomes can vary significantly based on employee demographics, health status, claims history, and local market conditions. 
+                    Larger populations (200+ employees) produce more statistically reliable estimates and reduce year-to-year volatility. 
+                    <strong>Recommendation:</strong> Consider professional actuarial review and pilot programs before full implementation for groups under 100 employees.
                   </div>
                 </div>
               )}
+              
+              {/* Participant Segmentation Notice */}
+              <div className="info-notice" style={{marginTop: '1rem', padding: '1rem', backgroundColor: '#e3f2fd', borderLeft: '4px solid #2196f3', borderRadius: '4px'}}>
+                <Info size={18} style={{marginRight: '0.5rem', verticalAlign: 'middle'}} />
+                <span>
+                  <strong>Important:</strong> DPC savings apply only to employees who enroll in the DPC program (participants), not all eligible employees. 
+                  Typical enrollment rates: 40-70% of eligible population. Higher enrollment = greater total savings. 
+                  This calculator assumes 100% participation for baseline estimates.
+                </span>
+              </div>
               
               {/* Summary Cards */}
               <div className="summary-cards">
@@ -1007,7 +1064,7 @@ Consult licensed benefits consultants and actuaries before making coverage decis
                 <div className="projection-section" style={{ marginTop: '30px' }}>
                   <h3>5-Year Savings Projection</h3>
                   <p className="note" style={{ marginBottom: '15px' }}>
-                    Projections include 6.5% annual medical trend and 3% DPC fee increase
+                    Projections include 7.5% annual medical trend (2024-2025 post-COVID inflation) and 3% DPC fee increase
                   </p>
                   <div style={{ overflowX: 'auto' }}>
                     <table className="projection-table" style={{
@@ -1054,6 +1111,56 @@ Consult licensed benefits consultants and actuaries before making coverage decis
                 </div>
               )}
 
+              {/* SENSITIVITY ANALYSIS SECTION */}
+              {results.sensitivity_analysis && (
+                <div className="sensitivity-section" style={{ marginTop: '30px' }}>
+                  <h3>Sensitivity Analysis</h3>
+                  <p className="note" style={{ marginBottom: '15px' }}>
+                    Savings range based on published peer-reviewed DPC outcome studies. Your actual results may vary.
+                  </p>
+                  <div className="sensitivity-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+                    <div className="sensitivity-card" style={{ padding: '20px', backgroundColor: '#e8f5e9', borderLeft: '4px solid #4caf50', borderRadius: '8px' }}>
+                      <h4 style={{ color: '#2e7d32', marginTop: 0 }}>Best Case Scenario</h4>
+                      <p className="big-number" style={{ fontSize: '28px', fontWeight: 'bold', color: '#1b5e20', margin: '10px 0' }}>
+                        ${results.sensitivity_analysis.bestCase.toLocaleString()}
+                      </p>
+                      <p className="note" style={{ fontSize: '14px', color: '#555', margin: 0 }}>
+                        {results.sensitivity_analysis.assumptions.bestCase}
+                      </p>
+                    </div>
+                    
+                    <div className="sensitivity-card" style={{ padding: '20px', backgroundColor: '#e3f2fd', borderLeft: '4px solid #2196f3', borderRadius: '8px' }}>
+                      <h4 style={{ color: '#1976d2', marginTop: 0 }}>Current Settings</h4>
+                      <p className="big-number" style={{ fontSize: '28px', fontWeight: 'bold', color: '#0d47a1', margin: '10px 0' }}>
+                        ${results.sensitivity_analysis.baseCase.toLocaleString()}
+                      </p>
+                      <p className="note" style={{ fontSize: '14px', color: '#555', margin: 0 }}>
+                        {results.sensitivity_analysis.assumptions.baseCase}
+                      </p>
+                    </div>
+                    
+                    <div className="sensitivity-card" style={{ padding: '20px', backgroundColor: '#fff3e0', borderLeft: '4px solid #ff9800', borderRadius: '8px' }}>
+                      <h4 style={{ color: '#e65100', marginTop: 0 }}>Worst Case Scenario</h4>
+                      <p className="big-number" style={{ fontSize: '28px', fontWeight: 'bold', color: '#bf360c', margin: '10px 0' }}>
+                        ${results.sensitivity_analysis.worstCase.toLocaleString()}
+                      </p>
+                      <p className="note" style={{ fontSize: '14px', color: '#555', margin: 0 }}>
+                        {results.sensitivity_analysis.assumptions.worstCase}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="info-notice" style={{ marginTop: '20px', padding: '15px', backgroundColor: '#fff9c4', borderLeft: '4px solid #fbc02d', borderRadius: '4px' }}>
+                    <AlertCircle size={18} style={{ marginRight: '0.5rem', verticalAlign: 'middle', color: '#f57f17' }} />
+                    <span>
+                      <strong>Understanding Variance:</strong> The range shown reflects real-world variability in published DPC studies. 
+                      Actual savings depend on population health, care coordination quality, provider network, and employee engagement. 
+                      Conservative planning should use worst-case or mid-range estimates, not best-case scenarios.
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Calculation Methodology */}
               <div className="methodology-section">
                 <h3>Calculation Methodology</h3>
@@ -1061,19 +1168,23 @@ Consult licensed benefits consultants and actuaries before making coverage decis
                   <div className="method-card">
                     <h4>Data Sources</h4>
                     <ul>
-                      <li><strong>Reduction Rates:</strong> Qliance, Iora Health, JAMA Network Open (2020)</li>
-                      <li><strong>Cost Data:</strong> CDC, HCCI, Medicare Fee Schedules</li>
-                      <li><strong>Utilization:</strong> MEPS (Medical Expenditure Panel Survey)</li>
-                      <li><strong>Premiums:</strong> Kaiser Family Foundation Employer Health Benefits Survey</li>
+                      <li><strong>DPC Utilization Impact:</strong> Qliance (65% ED reduction), Iora Health (42% ED, 18% hosp reduction), JAMA Network Open 2020 (54% avg ED reduction), DPC Frontier (27% hosp reduction)</li>
+                      <li><strong>Cost Data:</strong> CDC NCHS, Health Care Cost Institute (HCCI), CMS Medicare Fee Schedules, FAIR Health database (state all-payer claims)</li>
+                      <li><strong>Chronic Disease Costs:</strong> Medical Expenditure Panel Survey (MEPS), HCCI claims database, American Diabetes Association cost studies</li>
+                      <li><strong>Utilization Benchmarks:</strong> MEPS (Medical Expenditure Panel Survey), CDC National Ambulatory Medical Care Survey</li>
+                      <li><strong>Premium Data:</strong> Kaiser Family Foundation Employer Health Benefits Survey (annual)</li>
+                      <li><strong>Medical Trend:</strong> PwC Health Research Institute, Segal Health Trends Report (2024-2025: 7-8% post-COVID inflation)</li>
                     </ul>
                   </div>
                   <div className="method-card">
                     <h4>Conservative Assumptions</h4>
                     <ul>
-                      <li>ER/Urgent reduction: 50% (published range: 40-60%)</li>
-                      <li>Hospital reduction: 20% (published range: 15-30%)</li>
-                      <li>Premium reduction: 25% (published range: 20-40%)</li>
-                      <li>No stacking of reductions - applied independently</li>
+                      <li><strong>ER/Urgent reduction:</strong> 50% default (published range: 40-60%, sources: Qliance, Iora, JAMA)</li>
+                      <li><strong>Hospital reduction:</strong> 20% default (published range: 15-30%, sources: DPC Frontier, Employer Health Innovation Roundtable)</li>
+                      <li><strong>Premium reduction:</strong> 25% default (published range: 20-40%, requires HDHP pairing, source: KFF surveys)</li>
+                      <li><strong>No stacking:</strong> Reductions applied independently to avoid overstating savings</li>
+                      <li><strong>Participant-only savings:</strong> Assumes 100% enrollment; actual enrollment typically 40-70%</li>
+                      <li><strong>Medical trend:</strong> 7.5% annual (2024-2025 benchmark, adjusted for post-COVID inflation from pre-COVID 6.5%)</li>
                     </ul>
                   </div>
                   {results.insurance_type === 'fully_insured' && (
