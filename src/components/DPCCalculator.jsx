@@ -94,6 +94,7 @@ export default function DPCCalculator() {
     hosp_cost: 10000,
     annual_premium: 7000,
     premium_reduction: 25,
+    pairing_with_hdhp: true, // NEW: Explicit HDHP pairing toggle
     admin_fees_pmpm: 75,
     stop_loss_premium_pmpm: 150,
     dpc_monthly: 75,
@@ -319,14 +320,17 @@ Consult licensed benefits consultants and actuaries before making coverage decis
 
       if (insuranceType === 'fully_insured') {
         const annualPremium = clamp(formData.annual_premium, 0, 50000);
-        const reducedPremium = annualPremium * (1 - premiumRed);
+        // Only apply premium reduction if explicitly pairing with HDHP
+        const pairingHDHP = formData.pairing_with_hdhp ?? true;
+        const actualPremiumRed = pairingHDHP ? premiumRed : 0;
+        const reducedPremium = annualPremium * (1 - actualPremiumRed);
 
         traditionalTotal = annualPremium;
         dpcTotal = reducedPremium + dpcMembership;
 
         const utilizationEstimate = pcpClaims + urgentClaims + erClaims + hospClaims;
         const utilizationSavingsEstimate =
-          (urgentClaims + erClaims) * erUrgentRed + hospClaims * hospRed;
+          pcpClaims + (urgentClaims + erClaims) * erUrgentRed + hospClaims * hospRed; // FIXED: Add PCP savings
 
         traditionalBreakdown = {
           premium: money(annualPremium),
@@ -336,13 +340,16 @@ Consult licensed benefits consultants and actuaries before making coverage decis
         dpcBreakdown = {
           premium: money(reducedPremium),
           membership: money(dpcMembership),
-          utilization_estimate: money(utilizationEstimate - utilizationSavingsEstimate)
+          utilization_estimate: money(utilizationEstimate - utilizationSavingsEstimate),
+          hdhp_pairing: pairingHDHP
         };
       } else if (insuranceType === 'self_funded') {
         const admin = clamp(formData.admin_fees_pmpm, 0, 2000) * MONTHS_PER_YEAR;
         const stopLoss = clamp(formData.stop_loss_premium_pmpm, 0, 2000) * MONTHS_PER_YEAR;
 
+        // CRITICAL FIX: DPC membership REPLACES PCP claims
         traditionalTotal = pcpClaims + urgentClaims + erClaims + hospClaims + admin + stopLoss;
+        // DPC: PCP cost = $0 (replaced by membership), reduced ER/urgent/hosp
         dpcTotal = dpcUrgentClaims + dpcErClaims + dpcHospClaims + admin + stopLoss + dpcMembership;
 
         traditionalBreakdown = {
@@ -355,6 +362,7 @@ Consult licensed benefits consultants and actuaries before making coverage decis
         };
 
         dpcBreakdown = {
+          pcp: money(0), // FIXED: Explicit $0 for PCP (replaced by DPC membership)
           membership: money(dpcMembership),
           urgent: money(dpcUrgentClaims),
           er: money(dpcErClaims),
@@ -367,19 +375,46 @@ Consult licensed benefits consultants and actuaries before making coverage decis
         const wholesale = CAPS.WHOLESALE_MULTIPLIER;
 
         const traditionalMedical = (pcpClaims + urgentClaims + erClaims + hospClaims) * retail;
+        // FIXED: DPC eliminates PCP claims entirely (replaced by membership)
         const dpcMedical = (dpcUrgentClaims + dpcErClaims + dpcHospClaims) * wholesale;
 
         traditionalTotal = traditionalMedical;
         dpcTotal = dpcMembership + dpcMedical;
 
         traditionalBreakdown = { medical: money(traditionalMedical) };
-        dpcBreakdown = { membership: money(dpcMembership), medical: money(dpcMedical) };
+        dpcBreakdown = { 
+          pcp_eliminated: money(pcpClaims * retail), // Show PCP savings explicitly
+          membership: money(dpcMembership), 
+          medical: money(dpcMedical) 
+        };
       }
 
       const perEmployeeSavings = traditionalTotal - dpcTotal;
       const totalSavings = perEmployeeSavings * employees;
       const dpcInvestment = dpcMembership * employees;
       const roiOnInvestmentPct = dpcInvestment > 0 ? (totalSavings / dpcInvestment) * 100 : 0;
+
+      // 5-YEAR PROJECTION with medical trend
+      const MEDICAL_TREND = 0.065; // 6.5% annual trend (industry standard)
+      const DPC_FEE_INCREASE = 0.03; // DPC fees increase 3% per year
+      
+      const fiveYearProjection = [];
+      for (let year = 1; year <= 5; year++) {
+        const trendFactor = Math.pow(1 + MEDICAL_TREND, year - 1);
+        const dpcFeeFactor = Math.pow(1 + DPC_FEE_INCREASE, year - 1);
+        
+        const yearTraditional = traditionalTotal * trendFactor;
+        const yearDPC = (dpcTotal - dpcMembership) * trendFactor + dpcMembership * dpcFeeFactor;
+        const yearSavings = (yearTraditional - yearDPC) * employees;
+        
+        fiveYearProjection.push({
+          year,
+          traditional: money(yearTraditional),
+          dpc: money(yearDPC),
+          savings: money(yearSavings),
+          cumulative: money(fiveYearProjection.reduce((sum, y) => sum + y.savings, yearSavings))
+        });
+      }
 
       setResults({
         traditional_annual_per_employee: money(traditionalTotal),
@@ -390,7 +425,8 @@ Consult licensed benefits consultants and actuaries before making coverage decis
         roi_percentage: money(roiOnInvestmentPct),
         insurance_type: insuranceType,
         traditional_breakdown: traditionalBreakdown,
-        dpc_breakdown: dpcBreakdown
+        dpc_breakdown: dpcBreakdown,
+        five_year_projection: fiveYearProjection // NEW: 5-year trend analysis
       });
 
       setCalculating(false);
@@ -617,14 +653,29 @@ Consult licensed benefits consultants and actuaries before making coverage decis
                             <Info size={16} />
                           </span>
                         </label>
+                        
+                        {/* NEW: HDHP Pairing Checkbox */}
+                        <div className="form-group checkbox-group" style={{ marginBottom: '10px' }}>
+                          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={formData.pairing_with_hdhp ?? true}
+                              onChange={(e) => handleInputChange('pairing_with_hdhp', e.target.checked)}
+                              style={{ marginRight: '8px', width: 'auto' }}
+                            />
+                            <span>Pairing DPC with HDHP (required for premium reduction)</span>
+                          </label>
+                        </div>
+                        
                         <input
                           type="number"
                           min="0"
                           max="50"
                           value={formData.premium_reduction}
                           onChange={(e) => handleInputChange('premium_reduction', parseFloat(e.target.value))}
+                          disabled={!formData.pairing_with_hdhp}
                         />
-                        <small>Requires DPC + HDHP pairing. Typical: 20-40% reduction</small>
+                        <small>{formData.pairing_with_hdhp ? 'Typical: 20-40% reduction' : 'Enable HDHP pairing to apply premium reduction'}</small>
                       </div>
                     </div>
                   </div>
@@ -950,6 +1001,58 @@ Consult licensed benefits consultants and actuaries before making coverage decis
                   </div>
                 )}
               </div>
+
+              {/* 5-YEAR PROJECTION TABLE */}
+              {results.five_year_projection && (
+                <div className="projection-section" style={{ marginTop: '30px' }}>
+                  <h3>5-Year Savings Projection</h3>
+                  <p className="note" style={{ marginBottom: '15px' }}>
+                    Projections include 6.5% annual medical trend and 3% DPC fee increase
+                  </p>
+                  <div style={{ overflowX: 'auto' }}>
+                    <table className="projection-table" style={{
+                      width: '100%',
+                      borderCollapse: 'collapse',
+                      backgroundColor: 'white',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}>
+                      <thead>
+                        <tr style={{ backgroundColor: '#667eea', color: 'white' }}>
+                          <th style={{ padding: '12px', textAlign: 'left' }}>Year</th>
+                          <th style={{ padding: '12px', textAlign: 'right' }}>Traditional Cost</th>
+                          <th style={{ padding: '12px', textAlign: 'right' }}>DPC Cost</th>
+                          <th style={{ padding: '12px', textAlign: 'right' }}>Annual Savings</th>
+                          <th style={{ padding: '12px', textAlign: 'right' }}>Cumulative Savings</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {results.five_year_projection.map((yearData, idx) => (
+                          <tr key={idx} style={{ 
+                            borderBottom: '1px solid #e5e7eb',
+                            backgroundColor: idx % 2 === 0 ? '#f9fafb' : 'white'
+                          }}>
+                            <td style={{ padding: '12px', fontWeight: 'bold' }}>Year {yearData.year}</td>
+                            <td style={{ padding: '12px', textAlign: 'right' }}>
+                              ${(yearData.traditional * formData.num_employees).toLocaleString()}
+                            </td>
+                            <td style={{ padding: '12px', textAlign: 'right' }}>
+                              ${(yearData.dpc * formData.num_employees).toLocaleString()}
+                            </td>
+                            <td style={{ padding: '12px', textAlign: 'right', color: '#10b981', fontWeight: 'bold' }}>
+                              ${yearData.savings.toLocaleString()}
+                            </td>
+                            <td style={{ padding: '12px', textAlign: 'right', color: '#667eea', fontWeight: 'bold' }}>
+                              ${yearData.cumulative.toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
 
               {/* Calculation Methodology */}
               <div className="methodology-section">
